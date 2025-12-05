@@ -39,7 +39,7 @@ let _ =
     lines := List.rev !lines;
     let board = Array.of_list (List.map (fun s -> Array.of_list (explode s)) !lines) in
     let acc = ref 0 in
-    for k = 0 to 1000 do
+    for k = 0 to 100 do
     for x = 0 to Array.length board.(0) - 1 do
       for y = 0 to Array.length board - 1 do
         if board.(y).(x) = '@' then acc := !acc + check board (x, y)
