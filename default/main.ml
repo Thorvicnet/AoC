@@ -32,11 +32,18 @@ let blocks lines =
 ;;
 
 let blocks_array lines = blocks lines |> List.map Array.of_list |> Array.of_list
+
+let transpose a =
+  Array.init
+    (Array.length a.(0))
+    (fun i -> Array.init (Array.length a) (fun ii -> a.(ii).(i)))
+;;
+
+let string_to_array s = Array.init (String.length s) (String.get s)
 let ios = int_of_string
 let soi = string_of_int
 let foi = float_of_int
 let iof = int_of_float
-let ioc x = String.make 1 x |> int_of_string
 
 (* p1 *)
 

@@ -31,15 +31,20 @@ let blocks lines =
   if Array.length lines = 0 then [] else aux 0 [] []
 ;;
 
-let blocks_array lines =
-  blocks lines
-  |> List.map Array.of_list
-  |> Array.of_list
+let blocks_array lines = blocks lines |> List.map Array.of_list |> Array.of_list
 
+let transpose a =
+  Array.init
+    (Array.length a.(0))
+    (fun i -> Array.init (Array.length a) (fun ii -> a.(ii).(i)))
+;;
+
+let string_to_array s = Array.init (String.length s) (String.get s)
 let ios = int_of_string
 let soi = string_of_int
 let foi = float_of_int
 let iof = int_of_float
+let ioc x = ios (String.make 1 x)
 
 (* p1 *)
 
@@ -59,8 +64,25 @@ let _ =
   in
   Array.mapi (fun i x -> List.fold_left (fst op.(i)) (snd op.(i)) x) b
   |> Array.fold_left ( + ) 0
-  |> Printf.printf "%i\n"
+  |> Printf.printf "p1: %i\n"
 ;;
 
 (* p2 *)
-
+let _ =
+  let lines = read_file_as_array "input.txt" in
+  let op =
+    matches lines.(Array.length lines - 1) "\\+|\\*"
+    |> Array.of_list
+    |> Array.map (fun x -> if x = "+" then Int.add, 0 else Int.mul, 1)
+  in
+  Array.sub lines 0 (Array.length lines - 1)
+  |> Array.map string_to_array
+  |> transpose
+  |> Array.map (fun x -> Array.fold_right (fun y acc -> String.make 1 y ^ acc) x "")
+  |> Array.map String.trim
+  |> blocks_array
+  |> Array.mapi (fun i x ->
+    Array.fold_left (fun acc y -> (fst op.(i)) (ios y) acc) (snd op.(i)) x)
+  |> Array.fold_left ( + ) 0
+  |> Printf.printf "p2: %i\n"
+;;
