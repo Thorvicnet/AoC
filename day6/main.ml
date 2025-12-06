@@ -31,13 +31,36 @@ let blocks lines =
   if Array.length lines = 0 then [] else aux 0 [] []
 ;;
 
-let blocks_array lines = blocks lines |> List.map Array.of_list |> Array.of_list
+let blocks_array lines =
+  blocks lines
+  |> List.map Array.of_list
+  |> Array.of_list
+
 let ios = int_of_string
 let soi = string_of_int
 let foi = float_of_int
 let iof = int_of_float
-let ioc x = String.make 1 x |> int_of_string
 
 (* p1 *)
 
+let _ =
+  let lines = read_file_as_array "input.txt" in
+  let num = List.length (matches lines.(0) "\\d+") in
+  let b = Array.make num [] in
+  Array.iter
+    (fun xi ->
+       let m = matches xi "\\d+" in
+       List.iteri (fun i x -> b.(i) <- ios x :: b.(i)) m)
+    lines;
+  let op =
+    matches lines.(Array.length lines - 1) "\\+|\\*"
+    |> Array.of_list
+    |> Array.map (fun x -> if x = "+" then Int.add, 0 else Int.mul, 1)
+  in
+  Array.mapi (fun i x -> List.fold_left (fst op.(i)) (snd op.(i)) x) b
+  |> Array.fold_left ( + ) 0
+  |> Printf.printf "%i\n"
+;;
+
 (* p2 *)
+
