@@ -18,6 +18,12 @@ let soi = string_of_int
 let foi = float_of_int
 let iof = int_of_float
 
+(* p1 *)
+
+(* lost it, and as it used Hashtbl it is not a great loss *)
+
+(* p2 *)
+
 exception Split of (int * int) * (int * int)
 
 let _ =
@@ -53,5 +59,5 @@ let _ =
     incr cline
   done;
   let count = List.fold_left (fun acc (a, b) -> acc + b - a + 1) 0 !ranges in
-  Printf.printf "%i\n" count
+  Printf.printf "p2: %i\n" count
 ;;
