@@ -44,6 +44,7 @@ let ios = int_of_string
 let soi = string_of_int
 let foi = float_of_int
 let iof = int_of_float
+let ioc x = ios (String.make 1 x)
 
 (* p1 *)
 
