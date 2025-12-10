@@ -81,8 +81,8 @@ let _ =
   |> Array.map (fun x -> Array.fold_right (fun y acc -> String.make 1 y ^ acc) x "")
   |> Array.map String.trim
   |> blocks_array
-  |> Array.mapi (fun i x ->
-    Array.fold_left (fun acc y -> (fst op.(i)) (ios y) acc) (snd op.(i)) x)
+  |> Array.mapi (fun i x -> let f, neutral = op.(i) in
+    Array.fold_left (fun acc y -> f (ios y) acc) neutral x)
   |> Array.fold_left ( + ) 0
   |> Printf.printf "p2: %i\n"
 ;;
