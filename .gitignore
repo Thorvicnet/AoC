@@ -2,3 +2,5 @@
 *.cmx
 *.o
 .venv/
+input.txt
+test.txt
