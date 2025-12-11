@@ -46,29 +46,36 @@ let foi = float_of_int
 let iof = int_of_float
 let ioc x = ios (String.make 1 x)
 
-(* p1 *)
+(* parse *)
+
+let lines = read_file_as_array "input.txt"
+let hti = Hashtbl.create 242
+let n = Array.length lines
 
 let _ =
-  let lines = read_file_as_array "input.txt" in
-  let hti = Hashtbl.create 242 in
-  let ht = Hashtbl.create 242 in
   Array.iteri
     (fun i x ->
        let st = String.split_on_char ':' x in
        Hashtbl.add hti (List.hd st) i)
     lines;
-  let n = Array.length lines in
-  Hashtbl.add hti "out" n;
+  Hashtbl.add hti "out" n
+;;
+
+let adj =
+  Array.init (Array.length lines) (fun i ->
+    String.split_on_char ':' lines.(i)
+    |> List.tl
+    |> List.hd
+    |> String.split_on_char ' '
+    |> List.tl
+    |> List.map (Hashtbl.find hti))
+;;
+
+(* p1 *)
+
+let _ =
+  let ht = Hashtbl.create 242 in
   Hashtbl.add ht n 1;
-  let adj =
-    Array.init (Array.length lines) (fun i ->
-      String.split_on_char ':' lines.(i)
-      |> List.tl
-      |> List.hd
-      |> String.split_on_char ' '
-      |> List.tl
-      |> List.map (Hashtbl.find hti))
-  in
   let rec dfs ci gi =
     if ci = gi
     then 1
@@ -82,32 +89,14 @@ let _ =
   in
   let you = Hashtbl.find hti "you" in
   let out = n in
-  dfs you out |>
-  Printf.printf "p1: %d\n"
+  dfs you out |> Printf.printf "p1: %d\n"
+;;
 
 (* p2 *)
 
 let _ =
-  let lines = read_file_as_array "input.txt" in
-  let hti = Hashtbl.create 242 in
   let ht = Hashtbl.create 242 in
-  Array.iteri
-    (fun i x ->
-       let st = String.split_on_char ':' x in
-       Hashtbl.add hti (List.hd st) i)
-    lines;
-  let n = Array.length lines in
-  Hashtbl.add hti "out" n;
   Hashtbl.add ht n 1;
-  let adj =
-    Array.init (Array.length lines) (fun i ->
-      String.split_on_char ':' lines.(i)
-      |> List.tl
-      |> List.hd
-      |> String.split_on_char ' '
-      |> List.tl
-      |> List.map (Hashtbl.find hti))
-  in
   let rec dfs ci gi =
     if ci = gi
     then 1
@@ -132,4 +121,3 @@ let _ =
   let r3 = dfs svr fft in
   Printf.printf "p2: %d\n" (r1 * r2 * r3)
 ;;
-
