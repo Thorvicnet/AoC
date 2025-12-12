@@ -1,6 +1,8 @@
-all:
-	ocamlfind opt -package re -linkpkg -o main main.ml && ./main
+all: build
+	./main
 clean:
 	rm *.cmi *.cmx *.o
 build:
-	ocamlfind opt -package re -linkpkg -o main main.ml
+	ocamlfind ocamlopt -package re -c prelude.mli
+	ocamlfind ocamlopt -package re -c prelude.ml
+	ocamlfind ocamlopt -package re -linkpkg -o main prelude.cmx main.ml
